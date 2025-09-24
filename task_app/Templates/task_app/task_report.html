@@ -1,0 +1,38 @@
+{% extends "task_app/base.html" %}
+{% block content %}
+{% load widget_tweaks %}
+
+<div class="container my-4">
+
+  <h2 class="mb-4 text-primary">Task Report</h2>
+
+  <div class="card shadow-sm mb-4">
+    <div class="card-header bg-info text-white">
+      <h5 class="mb-0">{{ task.title }}</h5>
+    </div>
+    <div class="card-body">
+      {% if task.status == "Completed" and not form %}
+        <p><strong>Completion Report:</strong></p>
+        <div class="border p-3 rounded mb-3 bg-light">{{ task.completion_report }}</div>
+        <p><strong>Worked Hours:</strong> {{ task.worked_hours }} hours</p>
+      {% else %}
+        <h5 class="mb-3">Submit Completion</h5>
+        <form method="post">
+          {% csrf_token %}
+          <div class="mb-3">
+            {{ form.completion_report.label_tag }}
+            {{ form.completion_report|add_class:"form-control" }}
+          </div>
+          <div class="mb-3">
+            {{ form.worked_hours.label_tag }}
+            {{ form.worked_hours|add_class:"form-control" }}
+          </div>
+          <button type="submit" class="btn btn-success">Submit Completion</button>
+        </form>
+      {% endif %}
+    </div>
+  </div>
+
+</div>
+{% endblock %}
+

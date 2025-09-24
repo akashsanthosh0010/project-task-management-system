@@ -1,0 +1,44 @@
+{% extends "task_app/base.html" %}
+{% block content %}
+<div class="container my-4">
+
+  <h2 class="mb-4 text-primary">Users</h2>
+
+  {% if users %}
+    <div class="row">
+      {% for u in users %}
+<div class="card mb-3">
+  <div class="card-body">
+    <h5 class="card-title">{{ u.username }}</h5>
+    <p class="card-text mb-1"><strong>Email:</strong> {{ u.email }}</p>
+    <p class="card-text mb-1"><strong>Assigned Admin:</strong>
+        {% if u.assigned_admin %}
+            {{ u.assigned_admin.username }}
+        {% else %}
+            None
+        {% endif %}
+    </p>
+    <form method="post" action="{% url 'assign_admin' u.id %}">
+        {% csrf_token %}
+        <div class="mb-2">
+            <select name="assigned_admin" class="form-select form-select-sm" required>
+                <option value="">Select Admin</option>
+                {% for admin in admins %}
+                    <option value="{{ admin.id }}">{{ admin.username }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary btn-sm">Assign Admin</button>
+    </form>
+  </div>
+</div>
+{% endfor %}
+    </div>
+  {% else %}
+    <p class="text-muted">No users available.</p>
+  {% endif %}
+
+</div>
+{% endblock %}
+
+

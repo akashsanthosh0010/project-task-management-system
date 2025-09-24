@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login - Task Management</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 50px; }
+        .login-container { max-width: 400px; margin: auto; border: 1px solid #ccc; padding: 20px; border-radius: 6px; }
+        input { width: 100%; padding: 8px; margin: 8px 0; }
+        button { padding: 10px 15px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background: #0056b3; }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>Login</h2>
+        {% if form.errors %}
+            <p style="color:red;">Invalid username or password</p>
+        {% endif %}
+        <form method="post">
+            {% csrf_token %}
+            <label for="id_username">Username:</label>
+            {{ form.username }}
+            <label for="id_password">Password:</label>
+            {{ form.password }}
+            <button type="submit">Login</button>
+        </form>
+        <p class="mt-3 text-center">
+          Don't have an account? <a href="{% url 'signup' %}">Sign Up</a>
+        </p>
+    </div>
+</body>
+</html>

@@ -1,0 +1,84 @@
+{% extends "task_app/base.html" %}
+{% block content %}
+<div class="container my-4">
+
+  <h2 class="mb-4 text-primary">SuperAdmin Dashboard</h2>
+
+  <!-- Users Section -->
+  <div class="card mb-5 shadow-sm">
+    <div class="card-header bg-primary text-white">
+      <h4 class="mb-0">Users</h4>
+    </div>
+    <div class="card-body">
+      {% if users %}
+        <div class="row">
+          {% for u in users %}
+          <div class="col-md-4 mb-3">
+            <div class="card border-info h-100">
+              <div class="card-body">
+                <h5 class="card-title">{{ u.username }}</h5>
+                <p class="card-text mb-1"><strong>Email:</strong> {{ u.email }}</p>
+                <p class="card-text mb-1"><strong>Role:</strong> {{ u.role }}</p>
+                {% if u.assigned_admin %}
+                  <p class="card-text"><strong>Assigned Admin:</strong> {{ u.assigned_admin.username }}</p>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <p class="text-muted">No users found.</p>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Tasks Section -->
+  <div class="card shadow-sm">
+    <div class="card-header bg-success text-white">
+      <h4 class="mb-0">Tasks</h4>
+    </div>
+    <div class="card-body">
+      {% if tasks %}
+        <div class="row">
+          {% for t in tasks %}
+          <div class="col-md-4 mb-3">
+            <div class="card border-success h-100">
+              <div class="card-body">
+                <h5 class="card-title">
+                  <a href="{% url 'task_detail' t.id %}" class="text-decoration-none">{{ t.title }}</a>
+                </h5>
+                <p class="card-text mb-1"><strong>Assigned to:</strong>
+                  {% if t.assigned_to %}
+                    {{ t.assigned_to.username }}
+                  {% else %}
+                    Unassigned
+                  {% endif %}
+                </p>
+                <p class="card-text"><strong>Status:</strong> 
+                  {% if t.status == 'Completed' %}
+                    <span class="badge bg-success">{{ t.status }}</span>
+                  {% elif t.status == 'In Progress' %}
+                    <span class="badge bg-warning text-dark">{{ t.status }}</span>
+                  {% else %}
+                    <span class="badge bg-secondary">{{ t.status }}</span>
+                  {% endif %}
+                </p>
+                {% if t.status == "Completed" %}
+                  <a href="{% url 'task_report_view' t.id %}" class="btn btn-sm btn-primary mt-2">View Report</a>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <p class="text-muted">No tasks available.</p>
+      {% endif %}
+    </div>
+  </div>
+
+</div>
+{% endblock %}
+
+
